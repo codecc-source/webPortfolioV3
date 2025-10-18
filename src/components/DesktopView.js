@@ -16,19 +16,11 @@ export default function DesktopView() {
         title: "About Me",
         body: (
           <div className="space-y-4">
-            <p className="text-xs leading-relaxed">
-              Hello! I&apos;m a developer passionate about creating unique
-              digital experiences.
-            </p>
-            <p className="text-xs leading-relaxed">
-              With expertise in web development, I specialize in React, Next.js,
-              and modern frontend technologies.
-            </p>
+            <p className="text-xs leading-relaxed">LOREM IPSUM</p>
+            <p className="text-xs leading-relaxed">LOREM IPSUM</p>
             <div className="pt-4 border-t-2 border-green-500">
               <p className="text-[10px] text-green-400">SKILLS:</p>
-              <p className="text-xs mt-2">
-                JavaScript • React • Next.js • Tailwind • Node.js
-              </p>
+              <p className="text-xs mt-2">LOREM IPSUM</p>
             </div>
           </div>
         ),
@@ -43,22 +35,14 @@ export default function DesktopView() {
         body: (
           <div className="space-y-6">
             <div className="pixel-borders p-4 bg-gray-900">
-              <h3 className="text-sm text-green-400 mb-2">Project Alpha</h3>
-              <p className="text-xs leading-relaxed mb-2">
-                A full-stack application built with React and Node.js.
-              </p>
-              <p className="text-[10px] text-green-400">
-                TECH: React, Express, MongoDB
-              </p>
+              <h3 className="text-sm text-green-400 mb-2">LOREM IPSUM</h3>
+              <p className="text-xs leading-relaxed mb-2">LOREM IPSUM</p>
+              <p className="text-[10px] text-green-400">LOREM IPSUM</p>
             </div>
             <div className="pixel-borders p-4 bg-gray-900">
               <h3 className="text-sm text-green-400 mb-2">Project Beta</h3>
-              <p className="text-xs leading-relaxed mb-2">
-                An innovative mobile-first web application.
-              </p>
-              <p className="text-[10px] text-green-400">
-                TECH: Next.js, Tailwind, API
-              </p>
+              <p className="text-xs leading-relaxed mb-2">LOREM IPSUM</p>
+              <p className="text-[10px] text-green-400">LOREM IPSUM</p>
             </div>
           </div>
         ),
@@ -73,22 +57,14 @@ export default function DesktopView() {
         body: (
           <div className="space-y-4">
             <div>
-              <p className="text-sm text-green-400">Senior Developer</p>
-              <p className="text-[10px] text-green-300 mb-2">
-                Tech Company • 2022-Present
-              </p>
-              <p className="text-xs leading-relaxed">
-                Leading frontend development and mentoring junior developers.
-              </p>
+              <p className="text-sm text-green-400">LOREM IPSUM</p>
+              <p className="text-[10px] text-green-300 mb-2">LOREM IPSUM</p>
+              <p className="text-xs leading-relaxed">LOREM IPSUM</p>
             </div>
             <div className="border-t-2 border-green-500 pt-4">
-              <p className="text-sm text-green-400">Full Stack Developer</p>
-              <p className="text-[10px] text-green-300 mb-2">
-                Startup Inc • 2020-2022
-              </p>
-              <p className="text-xs leading-relaxed">
-                Built and maintained multiple client projects.
-              </p>
+              <p className="text-sm text-green-400">LOREM IPSUM</p>
+              <p className="text-[10px] text-green-300 mb-2">LOREM IPSUM</p>
+              <p className="text-xs leading-relaxed">LOREM IPSUM</p>
             </div>
           </div>
         ),
@@ -127,15 +103,15 @@ export default function DesktopView() {
             <div className="space-y-3">
               <div>
                 <p className="text-[10px] text-green-400">EMAIL:</p>
-                <p className="text-xs">your.email@example.com</p>
+                <p className="text-xs">LOREM IPSUM</p>
               </div>
               <div>
                 <p className="text-[10px] text-green-400">GITHUB:</p>
-                <p className="text-xs">github.com/yourusername</p>
+                <p className="text-xs">LOREM IPSUM</p>
               </div>
               <div>
                 <p className="text-[10px] text-green-400">LINKEDIN:</p>
-                <p className="text-xs">linkedin.com/in/yourprofile</p>
+                <p className="text-xs">LOREM IPSUM</p>
               </div>
             </div>
           </div>
@@ -148,9 +124,8 @@ export default function DesktopView() {
     <div className="min-h-screen bg-gradient-to-b from-blue-900 via-purple-900 to-black p-8">
       <div className="mb-8">
         <h1 className="text-xl md:text-2xl text-green-400 mb-2">
-          MY PORTFOLIO
+          CTJR
         </h1>
-        <p className="text-xs text-green-300">Double-click any icon to open</p>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-6xl">

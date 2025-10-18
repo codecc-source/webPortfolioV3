@@ -49,34 +49,30 @@ export default function BootScreen({ onBootComplete }) {
     <motion.div
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black z-50 flex items-center justify-center"
+      className="boot-screen fixed inset-0 z-50 bg-black"
     >
-      <div className="w-full max-w-2xl px-8">
-        <div className="mb-8">
-          <div className="text-green-500 text-xs md:text-sm mb-4 font-mono">
-            RETRO OS v1.0
-          </div>
-          <div className="text-green-500 text-xs md:text-sm mb-2 font-mono">
-            Copyright (c) 2025 Your Name
-          </div>
+      <div className="boot-content">
+        <div className="boot-header">
+          <div className="boot-header-line">RETRO OS v1.0</div>
+          <div className="boot-header-line">Copyright (c) CTJR</div>
         </div>
 
-        <div className="space-y-2 mb-8">
+        <div className="boot-messages">
           {bootMessages.slice(0, bootStage + 1).map((message, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-green-500 text-[10px] md:text-xs font-mono"
+              className="boot-message"
             >
               {message} <span className="animate-pulse">█</span>
             </motion.div>
           ))}
         </div>
 
-        <div className="w-full">
+        <div className="boot-progress">
           <div className="pixel-borders bg-black p-1">
-            <div className="w-full bg-gray-900 h-6 relative overflow-hidden">
+            <div className="w-full bg-gray-900 h-4 sm:h-6 relative overflow-hidden">
               <motion.div
                 className="h-full bg-green-500"
                 initial={{ width: 0 }}
@@ -85,9 +81,7 @@ export default function BootScreen({ onBootComplete }) {
               />
             </div>
           </div>
-          <div className="text-green-500 text-xs mt-2 text-center font-mono">
-            {progress}%
-          </div>
+          <div className="progress-text">{progress}%</div>
         </div>
       </div>
     </motion.div>
