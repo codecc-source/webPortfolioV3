@@ -51,18 +51,20 @@ export default function BootScreen({ onBootComplete }) {
       exit={{ opacity: 0 }}
       className="boot-screen fixed inset-0 z-50 bg-black"
     >
-      <div className="boot-content">
+      <div className="boot-overlay" />
+      <div className="boot-content modern-pixel">
         <div className="boot-header">
-          <div className="boot-header-line">RETRO OS v1.0</div>
-          <div className="boot-header-line">Copyright (c) CTJR</div>
+          <div className="boot-header-line">RETRO PORTFOLIO OS v3.0</div>
+          <div className="boot-header-line">© CTJR</div>
         </div>
 
         <div className="boot-messages">
           {bootMessages.slice(0, bootStage + 1).map((message, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
               className="boot-message"
             >
               {message} <span className="animate-pulse">█</span>
@@ -71,10 +73,10 @@ export default function BootScreen({ onBootComplete }) {
         </div>
 
         <div className="boot-progress">
-          <div className="pixel-borders bg-black p-1">
-            <div className="w-full bg-gray-900 h-4 sm:h-6 relative overflow-hidden">
+          <div className="pixel-borders bg-black/70 p-1 sm:p-2 rounded-md shadow-[0_0_12px_rgba(57,255,20,0.2)]">
+            <div className="w-full bg-gray-800 h-4 sm:h-5 relative overflow-hidden rounded-sm">
               <motion.div
-                className="h-full bg-green-500"
+                className="h-full bg-green-400 shadow-[0_0_8px_#39ff14]"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ ease: "linear" }}
