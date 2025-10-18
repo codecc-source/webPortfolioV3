@@ -43,7 +43,7 @@ export default function BootScreen({ onBootComplete }) {
       }, 1000);
       return () => clearTimeout(timeout);
     }
-  }, [bootStage, progress, onBootComplete]);
+  }, [bootStage, progress, onBootComplete, bootMessages.length]);
 
   return (
     <motion.div

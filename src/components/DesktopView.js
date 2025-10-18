@@ -17,8 +17,8 @@ export default function DesktopView() {
         body: (
           <div className="space-y-4">
             <p className="text-xs leading-relaxed">
-              Hello! I'm a developer passionate about creating unique digital
-              experiences.
+              Hello! I&apos;m a developer passionate about creating unique
+              digital experiences.
             </p>
             <p className="text-xs leading-relaxed">
               With expertise in web development, I specialize in React, Next.js,
