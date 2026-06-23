@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,6 +7,9 @@
 :root {
   --foreground-rgb: 0, 255, 0;
   --background-rgb: 0, 0, 0;
+  --cyan: #00ffff;
+  --magenta: #ff00ff;
+  --green: #39ff14;
 }
 
 body {
@@ -16,6 +19,42 @@ body {
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.4), 0 0 20px rgba(0, 255, 255, 0.2);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(57, 255, 20, 0.8), 0 0 40px rgba(0, 255, 255, 0.4);
+  }
+}
+
+@keyframes scan-lines {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 4px;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes cyber-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+  }
+  20%, 24%, 55% {
+    opacity: 0.8;
+  }
 }
 
 @layer utilities {
@@ -30,6 +69,55 @@ body {
   .text-pixel {
     font-family: 'Press Start 2P', cursive;
     line-height: 1.6;
+  }
+
+  .glow-text {
+    text-shadow: 
+      0 0 10px rgba(57, 255, 20, 0.5),
+      0 0 20px rgba(0, 255, 255, 0.2),
+      0 0 30px rgba(57, 255, 20, 0.1);
+  }
+
+  .glow-box {
+    box-shadow: 
+      0 0 10px rgba(57, 255, 20, 0.3),
+      0 0 20px rgba(0, 255, 255, 0.1),
+      inset 0 0 10px rgba(57, 255, 20, 0.05);
+  }
+
+  .glow-box-strong {
+    box-shadow: 
+      0 0 20px rgba(57, 255, 20, 0.6),
+      0 0 40px rgba(0, 255, 255, 0.2),
+      inset 0 0 10px rgba(57, 255, 20, 0.1);
+  }
+
+  .glow-pulse {
+    animation: glow-pulse 3s ease-in-out infinite;
+  }
+
+  .scan-line {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.03) 0px,
+      rgba(255, 255, 255, 0.03) 1px,
+      transparent 2px,
+      transparent 4px
+    );
+    animation: scan-lines 12s linear infinite;
+  }
+
+  .float-animation {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .cyber-flicker {
+    animation: cyber-flicker 0.15s infinite;
+  }
+
+  .retro-border {
+    border: 2px solid var(--green);
+    border-image: linear-gradient(135deg, var(--green), var(--cyan)) 1;
   }
 }
 

@@ -1,287 +1,345 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import {
-  Folder,
-  FileText,
-  Mail,
-  User,
+  Code2,
+  Rocket,
   Briefcase,
-  Battery,
-  Wifi,
-  Signal,
+  Mail,
+  Github,
+  Linkedin,
+  User,
+  Folder,
 } from "lucide-react";
 import Modal from "./Modal";
 
 export default function MobileView() {
-  const [selectedApp, setSelectedApp] = useState(null);
-  const [currentTime] = useState(
-    new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-  );
+  const [selectedProject, setSelectedProject] = useState(null);
 
-  const apps = [
+  const projects = [
     {
-      id: "about",
-      name: "About",
-      icon: User,
-      color: "bg-gradient-to-br from-blue-500 to-blue-600",
-      content: {
-        title: "About Me",
-        body: (
-          <div className="space-y-4">
-            <p className="text-sm leading-relaxed text-gray-700">
-              Hello! I&apos;m a developer passionate about creating unique
-              digital experiences.
-            </p>
-            <p className="text-sm leading-relaxed text-gray-700">
-              With expertise in web development, I specialize in React, Next.js,
-              and modern frontend technologies.
-            </p>
-            <div className="pt-4 border-t border-gray-200">
-              <p className="text-xs font-semibold text-gray-500 mb-2">SKILLS</p>
-              <div className="flex flex-wrap gap-2">
-                {["JavaScript", "React", "Next.js", "Tailwind", "Node.js"].map(
-                  (skill) => (
-                    <span
-                      key={skill}
-                      className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs"
-                    >
-                      {skill}
-                    </span>
-                  )
-                )}
-              </div>
-            </div>
-          </div>
-        ),
-      },
+      id: 1,
+      title: "PROJECT ALPHA",
+      subtitle: "FULL-STACK APP",
+      description: "Real-time collaboration platform with data visualization built with React and Node.js.",
+      tech: ["React", "Node.js", "MongoDB"],
+      year: "2024",
     },
     {
-      id: "projects",
-      name: "Projects",
-      icon: Folder,
-      color: "bg-gradient-to-br from-purple-500 to-purple-600",
-      content: {
-        title: "My Projects",
-        body: (
-          <div className="space-y-4">
-            <div className="border border-gray-200 rounded-lg p-4">
-              <h3 className="text-base font-semibold text-gray-800 mb-2">
-                Project Alpha
-              </h3>
-              <p className="text-sm text-gray-600 mb-3">
-                A full-stack application built with React and Node.js.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                  React
-                </span>
-                <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                  Express
-                </span>
-                <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                  MongoDB
-                </span>
-              </div>
-            </div>
-            <div className="border border-gray-200 rounded-lg p-4">
-              <h3 className="text-base font-semibold text-gray-800 mb-2">
-                Project Beta
-              </h3>
-              <p className="text-sm text-gray-600 mb-3">
-                An innovative mobile-first web application.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                  Next.js
-                </span>
-                <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                  Tailwind
-                </span>
-                <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                  API
-                </span>
-              </div>
-            </div>
-          </div>
-        ),
-      },
+      id: 2,
+      title: "PROJECT BETA",
+      subtitle: "MOBILE-FIRST",
+      description: "Responsive design system with stunning visual performance across all devices.",
+      tech: ["Next.js", "Tailwind CSS", "GraphQL"],
+      year: "2024",
     },
     {
-      id: "experience",
-      name: "Work",
-      icon: Briefcase,
-      color: "bg-gradient-to-br from-green-500 to-green-600",
-      content: {
-        title: "Work Experience",
-        body: (
-          <div className="space-y-6">
-            <div>
-              <p className="text-base font-semibold text-gray-800">
-                Senior Developer
-              </p>
-              <p className="text-sm text-gray-500 mb-2">
-                Tech Company • 2022-Present
-              </p>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Leading frontend development and mentoring junior developers.
-              </p>
-            </div>
-            <div className="border-t border-gray-200 pt-4">
-              <p className="text-base font-semibold text-gray-800">
-                Full Stack Developer
-              </p>
-              <p className="text-sm text-gray-500 mb-2">
-                Startup Inc • 2020-2022
-              </p>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Built and maintained multiple client projects.
-              </p>
-            </div>
-          </div>
-        ),
-      },
-    },
-    {
-      id: "resume",
-      name: "Resume",
-      icon: FileText,
-      color: "bg-gradient-to-br from-orange-500 to-orange-600",
-      content: {
-        title: "Resume",
-        body: (
-          <div className="space-y-4">
-            <p className="text-sm text-gray-700 leading-relaxed">
-              Download my complete resume to learn more about my background and
-              experience.
-            </p>
-            <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium w-full">
-              Download Resume
-            </button>
-          </div>
-        ),
-      },
-    },
-    {
-      id: "contact",
-      name: "Contact",
-      icon: Mail,
-      color: "bg-gradient-to-br from-pink-500 to-pink-600",
-      content: {
-        title: "Get In Touch",
-        body: (
-          <div className="space-y-4">
-            <p className="text-sm text-gray-700 leading-relaxed">
-              Feel free to reach out for collaborations or opportunities.
-            </p>
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <Mail className="w-5 h-5 text-blue-600 mt-0.5" />
-                <div>
-                  <p className="text-xs text-gray-500 font-medium">EMAIL</p>
-                  <p className="text-sm text-gray-800">
-                    your.email@example.com
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <svg
-                  className="w-5 h-5 text-blue-600 mt-0.5"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                </svg>
-                <div>
-                  <p className="text-xs text-gray-500 font-medium">GITHUB</p>
-                  <p className="text-sm text-gray-800">
-                    github.com/yourusername
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <svg
-                  className="w-5 h-5 text-blue-600 mt-0.5"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                </svg>
-                <div>
-                  <p className="text-xs text-gray-500 font-medium">LINKEDIN</p>
-                  <p className="text-sm text-gray-800">
-                    linkedin.com/in/yourprofile
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        ),
-      },
+      id: 3,
+      title: "PROJECT GAMMA",
+      subtitle: "AI ANALYTICS",
+      description: "Intelligent dashboard leveraging ML for real-time insights and analysis.",
+      tech: ["Python", "TensorFlow", "React"],
+      year: "2023",
     },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5 },
+    },
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 flex items-center justify-center p-4">
-      <div className="w-full max-w-sm aspect-[9/19] bg-black rounded-[3rem] shadow-2xl relative overflow-hidden border-8 border-gray-900">
-        <div className="absolute inset-2 bg-gradient-to-br from-blue-50 to-purple-50 rounded-[2.5rem] overflow-hidden flex flex-col">
-          <div className="bg-white/80 backdrop-blur-sm px-6 py-2 flex justify-between items-center text-xs text-gray-700 border-b border-gray-200">
-            <span className="font-medium">{currentTime}</span>
-            <div className="flex items-center gap-2">
-              <Signal size={14} />
-              <Wifi size={14} />
-              <Battery size={14} />
-            </div>
+    <div className="min-h-screen bg-black overflow-x-hidden">
+      {/* Scan line effect */}
+      <div className="fixed inset-0 scan-line pointer-events-none z-50" />
+
+      <div className="relative z-10">
+        {/* HERO SECTION */}
+        <motion.section
+          className="min-h-screen flex items-center justify-center px-4 pt-16 pb-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="text-center max-w-full mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.8 }}
+              className="mb-6"
+            >
+              <div className="text-xs text-cyan-400 mb-3 font-mono glow-text">
+                {"// MOBILE TERMINAL"}
+              </div>
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+              className="text-3xl md:text-4xl font-bold text-green-400 mb-4 glow-text"
+            >
+              DEVELOPER
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+              className="text-xs text-green-300 mb-8 font-mono"
+            >
+              FULL-STACK DEVELOPER
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8, duration: 0.8 }}
+              className="flex flex-col gap-3"
+            >
+              <button className="px-6 py-2 bg-green-400 text-black font-bold hover:bg-green-300 transition-all duration-300 text-xs">
+                VIEW PROJECTS
+              </button>
+              <button className="px-6 py-2 border-2 border-green-400 text-green-400 font-bold hover:bg-green-400 hover:text-black transition-all duration-300 text-xs">
+                CONTACT ME
+              </button>
+            </motion.div>
           </div>
+        </motion.section>
 
-          <div className="flex-1 p-6 overflow-y-auto">
-            <div className="mb-6">
-              <h1 className="text-2xl font-bold text-gray-800">Portfolio</h1>
-              <p className="text-sm text-gray-600">Tap any app to open</p>
-            </div>
+        {/* PROJECTS SECTION */}
+        <motion.section
+          className="py-12 px-4"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.h2
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-2xl font-bold text-green-400 mb-2 glow-text"
+          >
+            FEATURED_PROJECTS
+          </motion.h2>
 
-            <div className="grid grid-cols-3 gap-4">
-              {apps.map((app) => {
-                const IconComponent = app.icon;
-                return (
-                  <button
-                    key={app.id}
-                    onClick={() => setSelectedApp(app)}
-                    className="flex flex-col items-center gap-2 active:scale-95 transition-transform"
-                  >
-                    <div
-                      className={`${app.color} rounded-2xl p-4 w-full aspect-square flex items-center justify-center shadow-lg`}
+          <div className="h-1 w-12 bg-gradient-to-r from-green-400 to-cyan-400 mb-8" />
+
+          <motion.div
+            className="space-y-4"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {projects.map((project) => (
+              <motion.button
+                key={project.id}
+                variants={itemVariants}
+                onClick={() => setSelectedProject(project)}
+                className="glow-box w-full p-4 bg-gradient-to-br from-gray-900 to-black border border-green-500/30 transition-all duration-300 text-left"
+              >
+                <h3 className="text-sm font-bold text-green-400 mb-1">
+                  {project.title}
+                </h3>
+                <p className="text-xs text-green-300 mb-2 opacity-70">
+                  {project.subtitle}
+                </p>
+                <p className="text-xs text-green-300/70 mb-3 line-clamp-2">
+                  {project.description}
+                </p>
+                <div className="flex flex-wrap gap-1">
+                  {project.tech.slice(0, 2).map((tech) => (
+                    <span
+                      key={tech}
+                      className="text-[9px] px-2 py-1 bg-green-400/10 text-cyan-300 border border-green-500/20"
                     >
-                      <IconComponent
-                        size={28}
-                        className="text-white"
-                        strokeWidth={2}
-                      />
-                    </div>
-                    <span className="text-xs text-gray-700 text-center font-medium">
-                      {app.name}
+                      {tech}
                     </span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+                  ))}
+                </div>
+              </motion.button>
+            ))}
+          </motion.div>
+        </motion.section>
 
-          <div className="pb-2 flex justify-center">
-            <div className="w-24 h-1 bg-gray-400 rounded-full"></div>
-          </div>
-        </div>
+        {/* SKILLS SECTION */}
+        <motion.section
+          className="py-12 px-4"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.h2
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-2xl font-bold text-green-400 mb-2 glow-text"
+          >
+            TECH_STACK
+          </motion.h2>
 
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-2xl z-10"></div>
+          <div className="h-1 w-12 bg-gradient-to-r from-green-400 to-cyan-400 mb-8" />
+
+          <motion.div
+            className="space-y-4"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {[
+              { category: "Frontend", items: ["React", "Next.js", "Tailwind"] },
+              { category: "Backend", items: ["Node.js", "Python", "GraphQL"] },
+              { category: "Tools", items: ["Git", "Docker", "AWS"] },
+            ].map((skill) => (
+              <motion.div
+                key={skill.category}
+                variants={itemVariants}
+                className="glow-box p-4 bg-gradient-to-br from-gray-900/50 to-black border border-cyan-400/20"
+              >
+                <h3 className="text-sm font-bold text-cyan-300 mb-3">
+                  {skill.category.toUpperCase()}
+                </h3>
+                <div className="grid grid-cols-2 gap-2">
+                  {skill.items.map((item) => (
+                    <div
+                      key={item}
+                      className="text-xs text-green-300 border-l-2 border-green-500 pl-2 py-1"
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.section>
+
+        {/* CONTACT SECTION */}
+        <motion.section
+          className="py-12 px-4"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.h2
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-2xl font-bold text-green-400 mb-6 glow-text text-center"
+          >
+            LET'S_CONNECT
+          </motion.h2>
+
+          <motion.div
+            className="flex flex-col gap-3"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+          >
+            <a
+              href="mailto:your.email@example.com"
+              className="glow-box px-4 py-3 bg-green-400 text-black font-bold hover:bg-green-300 transition-all duration-300 flex items-center justify-center gap-2 text-sm"
+            >
+              <Mail className="w-4 h-4" />
+              EMAIL
+            </a>
+            <a
+              href="https://github.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="glow-box px-4 py-3 border-2 border-green-400 text-green-400 font-bold hover:bg-green-400 hover:text-black transition-all duration-300 flex items-center justify-center gap-2 text-sm"
+            >
+              <Github className="w-4 h-4" />
+              GITHUB
+            </a>
+            <a
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="glow-box px-4 py-3 border-2 border-cyan-400 text-cyan-400 font-bold hover:bg-cyan-400 hover:text-black transition-all duration-300 flex items-center justify-center gap-2 text-sm"
+            >
+              <Linkedin className="w-4 h-4" />
+              LINKEDIN
+            </a>
+          </motion.div>
+        </motion.section>
+
+        {/* FOOTER */}
+        <motion.footer
+          className="border-t-2 border-green-500 bg-black/80 py-6 px-4 mt-8"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
+          <div className="text-center">
+            <p className="text-xs text-green-400 font-mono">
+              {"// MOBILE OPTIMIZED"}
+            </p>
+            <p className="text-xs text-green-300 mt-1 font-mono opacity-70">
+              © 2024 CTJR
+            </p>
+          </div>
+        </motion.footer>
       </div>
 
-      {selectedApp && (
+      {/* Project Detail Modal */}
+      {selectedProject && (
         <Modal
-          isOpen={!!selectedApp}
-          onClose={() => setSelectedApp(null)}
-          title={selectedApp.content.title}
+          isOpen={!!selectedProject}
+          onClose={() => setSelectedProject(null)}
+          title={selectedProject.title}
         >
-          {selectedApp.content.body}
+          <div className="space-y-4">
+            <div>
+              <p className="text-xs text-green-400 mb-2 font-mono">TYPE</p>
+              <p className="text-sm text-green-300">{selectedProject.subtitle}</p>
+            </div>
+
+            <div>
+              <p className="text-xs text-green-400 mb-2 font-mono">DESCRIPTION</p>
+              <p className="text-sm text-green-300 leading-relaxed">
+                {selectedProject.description}
+              </p>
+            </div>
+
+            <div>
+              <p className="text-xs text-green-400 mb-2 font-mono">TECH</p>
+              <div className="flex flex-wrap gap-2">
+                {selectedProject.tech.map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2 py-1 bg-green-500/20 text-green-300 text-xs border border-green-500/50"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
         </Modal>
       )}
     </div>
