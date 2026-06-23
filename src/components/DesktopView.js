@@ -72,7 +72,7 @@ export default function DesktopView() {
   };
 
   return (
-    <div className="min-h-screen bg-black overflow-x-hidden">
+    <div className="min-h-screen bg-slate-950 text-slate-100 overflow-x-hidden">
       {/* Animated background grid */}
       <div className="fixed inset-0 opacity-10 pointer-events-none">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
@@ -152,10 +152,10 @@ export default function DesktopView() {
               transition={{ delay: 1, duration: 0.8 }}
               className="flex flex-wrap justify-center gap-4"
             >
-              <button className="px-8 py-3 bg-green-400 text-black font-bold hover:bg-green-300 transition-all duration-300 glow-box hover:glow-box-strong text-xs md:text-sm">
+              <button className="button-frame px-8 py-3 bg-gradient-to-r from-cyan-400 to-green-400 text-slate-950 font-bold hover:from-cyan-300 hover:to-green-300 transition-all duration-300 text-xs md:text-sm rounded-xl">
                 VIEW PROJECTS
               </button>
-              <button className="px-8 py-3 border-2 border-green-400 text-green-400 font-bold hover:bg-green-400 hover:text-black transition-all duration-300 text-xs md:text-sm">
+              <button className="button-frame px-8 py-3 border border-cyan-400 text-cyan-300 font-bold hover:bg-cyan-400 hover:text-slate-950 transition-all duration-300 text-xs md:text-sm rounded-xl">
                 CONTACT ME
               </button>
             </motion.div>
@@ -197,7 +197,7 @@ export default function DesktopView() {
                   onClick={() => setSelectedProject(project)}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
-                  className="glow-box hover:glow-box-strong p-6 bg-gradient-to-br from-gray-900 to-black border border-green-500/30 transition-all duration-300 text-left group"
+                  className="panel-frame hover:shadow-[0_0_24px_rgba(34,211,238,0.18)] p-6 bg-gradient-to-br from-slate-900 to-slate-950 border-slate-700/60 transition-all duration-300 text-left group rounded-3xl"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="text-4xl opacity-20 group-hover:opacity-40 transition-opacity">
@@ -270,7 +270,7 @@ export default function DesktopView() {
                 <motion.div
                   key={skill.category}
                   variants={itemVariants}
-                  className="glow-box p-8 bg-gradient-to-br from-gray-900/50 to-black border border-cyan-400/20"
+                  className="panel-frame p-8 bg-gradient-to-br from-slate-900/50 to-slate-950 border-slate-700/60 rounded-3xl"
                 >
                   <Code2 className="text-cyan-400 w-8 h-8 mb-4" />
                   <h3 className="text-xl font-bold text-cyan-300 mb-6">
@@ -330,7 +330,7 @@ export default function DesktopView() {
             >
               <a
                 href="mailto:your.email@example.com"
-                className="glow-box hover:glow-box-strong px-8 py-4 bg-green-400 text-black font-bold hover:bg-green-300 transition-all duration-300 flex items-center gap-2 text-sm"
+                className="button-frame hover:shadow-[0_0_24px_rgba(16,185,129,0.2)] px-8 py-4 bg-gradient-to-r from-cyan-400 to-green-400 text-slate-950 font-bold transition-all duration-300 flex items-center gap-2 text-sm rounded-xl"
               >
                 <Mail className="w-5 h-5" />
                 EMAIL
@@ -339,7 +339,7 @@ export default function DesktopView() {
                 href="https://github.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="glow-box hover:glow-box-strong px-8 py-4 border-2 border-green-400 text-green-400 font-bold hover:bg-green-400 hover:text-black transition-all duration-300 flex items-center gap-2 text-sm"
+                className="button-frame hover:shadow-[0_0_24px_rgba(56,189,248,0.2)] px-8 py-4 border border-cyan-400 text-cyan-300 font-bold hover:bg-cyan-400 hover:text-slate-950 transition-all duration-300 flex items-center gap-2 text-sm rounded-xl"
               >
                 <Github className="w-5 h-5" />
                 GITHUB
@@ -348,7 +348,7 @@ export default function DesktopView() {
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="glow-box hover:glow-box-strong px-8 py-4 border-2 border-cyan-400 text-cyan-400 font-bold hover:bg-cyan-400 hover:text-black transition-all duration-300 flex items-center gap-2 text-sm"
+                className="button-frame hover:shadow-[0_0_24px_rgba(56,189,248,0.2)] px-8 py-4 border border-cyan-400 text-cyan-300 font-bold hover:bg-cyan-400 hover:text-slate-950 transition-all duration-300 flex items-center gap-2 text-sm rounded-xl"
               >
                 <Linkedin className="w-5 h-5" />
                 LINKEDIN

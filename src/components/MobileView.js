@@ -112,10 +112,10 @@ export default function MobileView() {
               transition={{ delay: 0.8, duration: 0.8 }}
               className="flex flex-col gap-3"
             >
-              <button className="px-6 py-2 bg-green-400 text-black font-bold hover:bg-green-300 transition-all duration-300 text-xs">
+              <button className="button-frame px-6 py-2 bg-gradient-to-r from-cyan-400 to-green-400 text-slate-950 font-bold hover:from-cyan-300 hover:to-green-300 transition-all duration-300 text-xs rounded-xl">
                 VIEW PROJECTS
               </button>
-              <button className="px-6 py-2 border-2 border-green-400 text-green-400 font-bold hover:bg-green-400 hover:text-black transition-all duration-300 text-xs">
+              <button className="button-frame px-6 py-2 border border-cyan-400 text-cyan-300 font-bold hover:bg-cyan-400 hover:text-slate-950 transition-all duration-300 text-xs rounded-xl">
                 CONTACT ME
               </button>
             </motion.div>
@@ -154,7 +154,7 @@ export default function MobileView() {
                 key={project.id}
                 variants={itemVariants}
                 onClick={() => setSelectedProject(project)}
-                className="glow-box w-full p-4 bg-gradient-to-br from-gray-900 to-black border border-green-500/30 transition-all duration-300 text-left"
+                className="panel-frame w-full p-4 bg-gradient-to-br from-slate-900 to-slate-950 border-slate-700/60 transition-all duration-300 text-left rounded-3xl"
               >
                 <h3 className="text-sm font-bold text-green-400 mb-1">
                   {project.title}
@@ -215,7 +215,7 @@ export default function MobileView() {
               <motion.div
                 key={skill.category}
                 variants={itemVariants}
-                className="glow-box p-4 bg-gradient-to-br from-gray-900/50 to-black border border-cyan-400/20"
+                className="panel-frame p-4 bg-gradient-to-br from-slate-900/50 to-slate-950 border-slate-700/60 rounded-3xl"
               >
                 <h3 className="text-sm font-bold text-cyan-300 mb-3">
                   {skill.category.toUpperCase()}
@@ -262,7 +262,7 @@ export default function MobileView() {
           >
             <a
               href="mailto:your.email@example.com"
-              className="glow-box px-4 py-3 bg-green-400 text-black font-bold hover:bg-green-300 transition-all duration-300 flex items-center justify-center gap-2 text-sm"
+              className="button-frame px-4 py-3 bg-gradient-to-r from-cyan-400 to-green-400 text-slate-950 font-bold hover:from-cyan-300 hover:to-green-300 transition-all duration-300 flex items-center justify-center gap-2 text-sm rounded-xl"
             >
               <Mail className="w-4 h-4" />
               EMAIL
@@ -271,7 +271,7 @@ export default function MobileView() {
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="glow-box px-4 py-3 border-2 border-green-400 text-green-400 font-bold hover:bg-green-400 hover:text-black transition-all duration-300 flex items-center justify-center gap-2 text-sm"
+              className="button-frame px-4 py-3 border border-cyan-400 text-cyan-300 font-bold hover:bg-cyan-400 hover:text-slate-950 transition-all duration-300 flex items-center justify-center gap-2 text-sm rounded-xl"
             >
               <Github className="w-4 h-4" />
               GITHUB
@@ -280,7 +280,7 @@ export default function MobileView() {
               href="https://linkedin.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="glow-box px-4 py-3 border-2 border-cyan-400 text-cyan-400 font-bold hover:bg-cyan-400 hover:text-black transition-all duration-300 flex items-center justify-center gap-2 text-sm"
+              className="button-frame px-4 py-3 border border-cyan-400 text-cyan-300 font-bold hover:bg-cyan-400 hover:text-slate-950 transition-all duration-300 flex items-center justify-center gap-2 text-sm rounded-xl"
             >
               <Linkedin className="w-4 h-4" />
               LINKEDIN

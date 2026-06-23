@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function BootScreen({ onBootComplete }) {
   const [bootStage, setBootStage] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [readyToContinue, setReadyToContinue] = useState(false);
 
   const bootMessages = [
     "INITIALIZING SYSTEM...",
@@ -23,13 +24,14 @@ export default function BootScreen({ onBootComplete }) {
   useEffect(() => {
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 100) {
+        const next = prev + Math.random() * 10 + 4;
+        if (next >= 100) {
           clearInterval(progressInterval);
           return 100;
         }
-        return prev + Math.random() * 15;
+        return next;
       });
-    }, 150);
+    }, 120);
 
     return () => clearInterval(progressInterval);
   }, []);
@@ -38,15 +40,29 @@ export default function BootScreen({ onBootComplete }) {
     if (bootStage < bootMessages.length - 1) {
       const timeout = setTimeout(() => {
         setBootStage((prev) => prev + 1);
-      }, 600);
-      return () => clearTimeout(timeout);
-    } else if (bootStage === bootMessages.length - 1 && progress >= 95) {
-      const timeout = setTimeout(() => {
-        onBootComplete();
-      }, 1200);
+      }, 650);
       return () => clearTimeout(timeout);
     }
-  }, [bootStage, progress, onBootComplete, bootMessages.length]);
+  }, [bootStage, bootMessages.length]);
+
+  useEffect(() => {
+    if (bootStage === bootMessages.length - 1 && progress >= 100) {
+      setReadyToContinue(true);
+    }
+  }, [bootStage, progress]);
+
+  const handleContinue = useCallback(() => {
+    if (readyToContinue) {
+      onBootComplete();
+    }
+  }, [readyToContinue, onBootComplete]);
+
+  useEffect(() => {
+    if (!readyToContinue) return;
+    const onKeyDown = () => handleContinue();
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [readyToContinue, handleContinue]);
 
   return (
     <motion.div
@@ -54,6 +70,7 @@ export default function BootScreen({ onBootComplete }) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.6 }}
       className="boot-screen fixed inset-0 z-50 bg-black"
+      onClick={handleContinue}
     >
       <div className="boot-overlay" />
       <div className="boot-content modern-pixel">
@@ -112,13 +129,13 @@ export default function BootScreen({ onBootComplete }) {
                 animate={{ width: `${Math.min(progress, 100)}%` }}
                 transition={{ ease: "easeInOut" }}
               />
-              <div className="absolute inset-0 opacity-30 bg-repeating-linear-gradient(
-                90deg,
-                transparent,
-                transparent 2px,
-                rgba(255,255,255,0.1) 2px,
-                rgba(255,255,255,0.1) 4px
-              )" />
+              <div
+                className="absolute inset-0 opacity-30 pointer-events-none"
+                style={{
+                  backgroundImage:
+                    "repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.1) 2px, rgba(255,255,255,0.1) 4px)",
+                }}
+              />
             </div>
           </div>
           <motion.div
@@ -136,7 +153,11 @@ export default function BootScreen({ onBootComplete }) {
           transition={{ delay: 1.5, duration: 0.5 }}
           className="text-center mt-8 text-green-300/50 text-xs font-mono"
         >
-          <p>Press any key to continue...</p>
+          {readyToContinue ? (
+            <p>Press any key or click to continue...</p>
+          ) : (
+            <p>Booting device... please wait.</p>
+          )}
         </motion.div>
       </div>
     </motion.div>
