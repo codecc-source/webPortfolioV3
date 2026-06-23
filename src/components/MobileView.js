@@ -250,7 +250,7 @@ export default function MobileView() {
             transition={{ duration: 0.6 }}
             className="text-2xl font-bold text-green-400 mb-6 glow-text text-center"
           >
-            LET'S_CONNECT
+            LET&apos;S_CONNECT
           </motion.h2>
 
           <motion.div

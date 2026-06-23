@@ -308,7 +308,7 @@ export default function DesktopView() {
               transition={{ duration: 0.6 }}
               className="text-3xl md:text-5xl font-bold text-green-400 mb-8 glow-text"
             >
-              LET'S_CONNECT
+              LET&apos;S_CONNECT
             </motion.h2>
 
             <motion.p
@@ -318,7 +318,7 @@ export default function DesktopView() {
               transition={{ delay: 0.2, duration: 0.6 }}
               className="text-sm text-green-300 mb-12 font-mono"
             >
-              Have a project in mind? Let's collaborate and create something extraordinary.
+              Have a project in mind? Let&apos;s collaborate and create something extraordinary.
             </motion.p>
 
             <motion.div
