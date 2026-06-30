@@ -1,343 +1,503 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
-  Code2,
-  Rocket,
-  Briefcase,
   Mail,
   Github,
   Linkedin,
-  User,
-  Folder,
+  FolderOpen,
+  ArrowUpRight,
+  CircleDot,
+  Terminal,
+  Briefcase,
+  GraduationCap,
+  Sparkles,
 } from "lucide-react";
 import Modal from "./Modal";
+import GithubStats from "./Githubstats";
+
+const fadeUp = {
+  initial: { opacity: 0, y: 16 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-40px" },
+  transition: { duration: 0.5 },
+};
 
 export default function MobileView() {
   const [selectedProject, setSelectedProject] = useState(null);
+  const [now, setNow] = useState(null);
+
+  useEffect(() => {
+    setNow(new Date());
+    const id = setInterval(() => setNow(new Date()), 1000 * 30);
+    return () => clearInterval(id);
+  }, []);
 
   const projects = [
     {
       id: 1,
-      title: "PROJECT ALPHA",
-      subtitle: "FULL-STACK APP",
-      description: "Real-time collaboration platform with data visualization built with React and Node.js.",
+      title: "Project Alpha",
+      subtitle: "Collaboration shell",
+      description:
+        "A compact console with responsive tiles, status quicklinks, and restrained motion.",
       tech: ["React", "Node.js", "MongoDB"],
-      year: "2024",
+      year: "2026",
     },
     {
       id: 2,
-      title: "PROJECT BETA",
-      subtitle: "MOBILE-FIRST",
-      description: "Responsive design system with stunning visual performance across all devices.",
-      tech: ["Next.js", "Tailwind CSS", "GraphQL"],
-      year: "2024",
+      title: "Project Beta",
+      subtitle: "Performance UI",
+      description:
+        "A polished interface with quick access actions and a modern handheld layout.",
+      tech: ["Next.js", "Tailwind", "GraphQL"],
+      year: "2026",
     },
     {
       id: 3,
-      title: "PROJECT GAMMA",
-      subtitle: "AI ANALYTICS",
-      description: "Intelligent dashboard leveraging ML for real-time insights and analysis.",
+      title: "Project Gamma",
+      subtitle: "AI dashboard",
+      description:
+        "A mini data hub that surfaces key features quickly while staying legible.",
       tech: ["Python", "TensorFlow", "React"],
-      year: "2023",
+      year: "2025",
+    },
+    {
+      id: 4,
+      title: "Project Delta",
+      subtitle: "Automation engine",
+      description:
+        "A scripting pipeline that batches repetitive ops work into scheduled jobs.",
+      tech: ["Node.js", "Apps Script", "Cron"],
+      year: "2025",
+    },
+    {
+      id: 5,
+      title: "Project Epsilon",
+      subtitle: "Client CMS toolkit",
+      description:
+        "Theme and plugin extensions giving non-technical editors real layout control.",
+      tech: ["WordPress", "PHP", "JS"],
+      year: "2025",
+    },
+    {
+      id: 6,
+      title: "Project Zeta",
+      subtitle: "3D pricing widget",
+      description:
+        "A client-side STL parser and pricing calculator with a live 3D viewer.",
+      tech: ["JavaScript", "Babylon.js", "Duda"],
+      year: "2026",
     },
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
+  const quickLinks = [
+    { label: "Email", icon: Mail, href: "mailto:your.email@example.com" },
+    { label: "GitHub", icon: Github, href: "https://github.com" },
+    { label: "LinkedIn", icon: Linkedin, href: "https://linkedin.com" },
+  ];
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5 },
+  const skills = [
+    {
+      category: "Frontend",
+      items: ["React", "Next.js", "Tailwind", "Framer Motion"],
     },
-  };
+    { category: "Backend", items: ["Node.js", "Python", "GraphQL", "REST"] },
+    { category: "CMS / Platforms", items: ["WordPress", "Duda", "PHP"] },
+  ];
+
+  const experience = [
+    {
+      role: "Freelance Web Developer",
+      org: "Self-employed",
+      period: "2023 — present",
+      description:
+        "Building and maintaining client sites and custom product widgets.",
+      icon: Terminal,
+    },
+    {
+      role: "Frontend Contractor",
+      org: "Various agencies",
+      period: "2021 — 2023",
+      description:
+        "Delivered responsive interfaces and performance fixes for clients.",
+      icon: Briefcase,
+    },
+    {
+      role: "Started building",
+      org: "Self-taught",
+      period: "2019",
+      description: "Picked up HTML, CSS, and JavaScript and started shipping.",
+      icon: GraduationCap,
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-black overflow-x-hidden">
-      {/* Scan line effect */}
-      <div className="fixed inset-0 scan-line pointer-events-none z-50" />
-
-      <div className="relative z-10">
-        {/* HERO SECTION */}
-        <motion.section
-          className="min-h-screen flex items-center justify-center px-4 pt-16 pb-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-        >
-          <div className="text-center max-w-full mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-              className="mb-6"
-            >
-              <div className="text-xs text-cyan-400 mb-3 font-mono glow-text">
-                {"// MOBILE TERMINAL"}
-              </div>
-            </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-              className="text-3xl md:text-4xl font-bold text-green-400 mb-4 glow-text"
-            >
-              DEVELOPER
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
-              className="text-xs text-green-300 mb-8 font-mono"
-            >
-              FULL-STACK DEVELOPER
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8, duration: 0.8 }}
-              className="flex flex-col gap-3"
-            >
-              <button className="button-frame px-6 py-2 bg-gradient-to-r from-cyan-400 to-green-400 text-slate-950 font-bold hover:from-cyan-300 hover:to-green-300 transition-all duration-300 text-xs rounded-xl">
-                VIEW PROJECTS
-              </button>
-              <button className="button-frame px-6 py-2 border border-cyan-400 text-cyan-300 font-bold hover:bg-cyan-400 hover:text-slate-950 transition-all duration-300 text-xs rounded-xl">
-                CONTACT ME
-              </button>
-            </motion.div>
+    <div
+      className="min-h-screen scan-texture"
+      style={{ background: "var(--bg)", color: "var(--text)" }}
+    >
+      <div
+        className="fixed inset-x-0 top-0 z-20 border-b"
+        style={{
+          borderColor: "var(--border)",
+          background: "rgba(18,18,16,0.85)",
+          backdropFilter: "blur(10px)",
+        }}
+      >
+        <div className="flex items-center justify-between px-5 py-3.5 font-mono text-[11px]">
+          <div className="flex items-center gap-2">
+            <span
+              className="h-1.5 w-1.5 rounded-full"
+              style={{ background: "var(--accent)" }}
+            />
+            <span>workspace</span>
           </div>
-        </motion.section>
-
-        {/* PROJECTS SECTION */}
-        <motion.section
-          className="py-12 px-4"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <motion.h2
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-2xl font-bold text-green-400 mb-2 glow-text"
-          >
-            FEATURED_PROJECTS
-          </motion.h2>
-
-          <div className="h-1 w-12 bg-gradient-to-r from-green-400 to-cyan-400 mb-8" />
-
-          <motion.div
-            className="space-y-4"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {projects.map((project) => (
-              <motion.button
-                key={project.id}
-                variants={itemVariants}
-                onClick={() => setSelectedProject(project)}
-                className="panel-frame w-full p-4 bg-gradient-to-br from-slate-900 to-slate-950 border-slate-700/60 transition-all duration-300 text-left rounded-3xl"
-              >
-                <h3 className="text-sm font-bold text-green-400 mb-1">
-                  {project.title}
-                </h3>
-                <p className="text-xs text-green-300 mb-2 opacity-70">
-                  {project.subtitle}
-                </p>
-                <p className="text-xs text-green-300/70 mb-3 line-clamp-2">
-                  {project.description}
-                </p>
-                <div className="flex flex-wrap gap-1">
-                  {project.tech.slice(0, 2).map((tech) => (
-                    <span
-                      key={tech}
-                      className="text-[9px] px-2 py-1 bg-green-400/10 text-cyan-300 border border-green-500/20"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </motion.button>
-            ))}
-          </motion.div>
-        </motion.section>
-
-        {/* SKILLS SECTION */}
-        <motion.section
-          className="py-12 px-4"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <motion.h2
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-2xl font-bold text-green-400 mb-2 glow-text"
-          >
-            TECH_STACK
-          </motion.h2>
-
-          <div className="h-1 w-12 bg-gradient-to-r from-green-400 to-cyan-400 mb-8" />
-
-          <motion.div
-            className="space-y-4"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {[
-              { category: "Frontend", items: ["React", "Next.js", "Tailwind"] },
-              { category: "Backend", items: ["Node.js", "Python", "GraphQL"] },
-              { category: "Tools", items: ["Git", "Docker", "AWS"] },
-            ].map((skill) => (
-              <motion.div
-                key={skill.category}
-                variants={itemVariants}
-                className="panel-frame p-4 bg-gradient-to-br from-slate-900/50 to-slate-950 border-slate-700/60 rounded-3xl"
-              >
-                <h3 className="text-sm font-bold text-cyan-300 mb-3">
-                  {skill.category.toUpperCase()}
-                </h3>
-                <div className="grid grid-cols-2 gap-2">
-                  {skill.items.map((item) => (
-                    <div
-                      key={item}
-                      className="text-xs text-green-300 border-l-2 border-green-500 pl-2 py-1"
-                    >
-                      {item}
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.section>
-
-        {/* CONTACT SECTION */}
-        <motion.section
-          className="py-12 px-4"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <motion.h2
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-2xl font-bold text-green-400 mb-6 glow-text text-center"
-          >
-            LET&apos;S_CONNECT
-          </motion.h2>
-
-          <motion.div
-            className="flex flex-col gap-3"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-          >
-            <a
-              href="mailto:your.email@example.com"
-              className="button-frame px-4 py-3 bg-gradient-to-r from-cyan-400 to-green-400 text-slate-950 font-bold hover:from-cyan-300 hover:to-green-300 transition-all duration-300 flex items-center justify-center gap-2 text-sm rounded-xl"
-            >
-              <Mail className="w-4 h-4" />
-              EMAIL
-            </a>
-            <a
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="button-frame px-4 py-3 border border-cyan-400 text-cyan-300 font-bold hover:bg-cyan-400 hover:text-slate-950 transition-all duration-300 flex items-center justify-center gap-2 text-sm rounded-xl"
-            >
-              <Github className="w-4 h-4" />
-              GITHUB
-            </a>
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="button-frame px-4 py-3 border border-cyan-400 text-cyan-300 font-bold hover:bg-cyan-400 hover:text-slate-950 transition-all duration-300 flex items-center justify-center gap-2 text-sm rounded-xl"
-            >
-              <Linkedin className="w-4 h-4" />
-              LINKEDIN
-            </a>
-          </motion.div>
-        </motion.section>
-
-        {/* FOOTER */}
-        <motion.footer
-          className="border-t-2 border-green-500 bg-black/80 py-6 px-4 mt-8"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-        >
-          <div className="text-center">
-            <p className="text-xs text-green-400 font-mono">
-              {"// MOBILE OPTIMIZED"}
-            </p>
-            <p className="text-xs text-green-300 mt-1 font-mono opacity-70">
-              © 2024 CTJR
-            </p>
-          </div>
-        </motion.footer>
+          <span suppressHydrationWarning style={{ color: "var(--text-faint)" }}>
+            {now
+              ? now.toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              : "--:--"}
+          </span>
+        </div>
       </div>
 
-      {/* Project Detail Modal */}
+      <main className="relative z-10 px-5 pt-20 pb-14">
+        <div className="mx-auto max-w-md stack-lg space-y-6">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="panel p-7"
+          >
+            <p className="eyebrow">portfolio / 2026</p>
+            <h1
+              className="font-display mt-3 text-3xl font-semibold leading-tight"
+              style={{ color: "var(--text)" }}
+            >
+              Building calm, considered interfaces.
+            </h1>
+            <p
+              className="mt-4 text-sm leading-7"
+              style={{ color: "var(--text-dim)" }}
+            >
+              I design and build product interfaces, from architecture down to
+              pixel-level detail.
+            </p>
+            <div className="mt-6 flex items-center gap-2 panel-sunken px-4 py-3 w-fit">
+              <CircleDot
+                className="h-3.5 w-3.5"
+                style={{ color: "var(--accent-2)" }}
+              />
+              <span
+                className="text-xs font-medium"
+                style={{ color: "var(--text)" }}
+              >
+                Available for work
+              </span>
+            </div>
+          </motion.div>
+
+          {/* About */}
+          <motion.div {...fadeUp} className="panel p-7">
+            <p className="eyebrow">about</p>
+            <h2
+              className="font-display mt-2 text-lg font-semibold"
+              style={{ color: "var(--text)" }}
+            >
+              A bit of context
+            </h2>
+            <p
+              className="mt-3 text-sm leading-6"
+              style={{ color: "var(--text-dim)" }}
+            >
+              I like systems that feel solid — fast load times, layouts that
+              don't shift, and interfaces that explain themselves. Most of my
+              work sits between custom product builds and client CMS platforms.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {["Detail-oriented", "Performance-minded", "Ships fast"].map(
+                (tag) => (
+                  <span
+                    key={tag}
+                    className="chip px-2.5 py-1 text-[11px] font-mono"
+                  >
+                    {tag}
+                  </span>
+                ),
+              )}
+            </div>
+          </motion.div>
+
+          {/* Projects */}
+          <motion.div {...fadeUp}>
+            <div className="mb-4 mt-1 flex items-center justify-between">
+              <h2
+                className="font-display text-lg font-semibold"
+                style={{ color: "var(--text)" }}
+              >
+                Selected work
+              </h2>
+              <span
+                className="font-mono text-[11px]"
+                style={{ color: "var(--text-faint)" }}
+              >
+                {projects.length} projects
+              </span>
+            </div>
+
+            <div className="project-grid gap-4">
+              {projects.map((project, i) => (
+                <motion.button
+                  key={project.id}
+                  onClick={() => setSelectedProject(project)}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-30px" }}
+                  transition={{ duration: 0.35, delay: (i % 3) * 0.06 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="panel group text-left p-7"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="grid h-10 w-10 place-items-center rounded-xl"
+                        style={{ background: "var(--accent-soft)" }}
+                      >
+                        <FolderOpen
+                          className="h-4.5 w-4.5"
+                          style={{ color: "var(--accent)" }}
+                        />
+                      </div>
+                      <div>
+                        <p
+                          className="font-display text-[15px] font-semibold"
+                          style={{ color: "var(--text)" }}
+                        >
+                          {project.title}
+                        </p>
+                        <p
+                          className="font-mono text-[11px]"
+                          style={{ color: "var(--text-faint)" }}
+                        >
+                          {project.subtitle}
+                        </p>
+                      </div>
+                    </div>
+                    <ArrowUpRight
+                      className="h-4 w-4 opacity-50"
+                      style={{ color: "var(--accent)" }}
+                    />
+                  </div>
+                  <p
+                    className="mt-3 text-sm leading-6 line-clamp-2"
+                    style={{ color: "var(--text-dim)" }}
+                  >
+                    {project.description}
+                  </p>
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Experience */}
+          <motion.div {...fadeUp} className="panel p-7">
+            <p className="eyebrow">history</p>
+            <h2
+              className="font-display mt-2 text-lg font-semibold"
+              style={{ color: "var(--text)" }}
+            >
+              Experience
+            </h2>
+            <div className="mt-6 space-y-6">
+              {experience.map((item, i) => {
+                const Icon = item.icon;
+                return (
+                  <motion.div
+                    key={item.role}
+                    initial={{ opacity: 0, x: -8 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-30px" }}
+                    transition={{ duration: 0.35, delay: i * 0.06 }}
+                    className="flex gap-3"
+                  >
+                    <div className="flex flex-col items-center">
+                      <div
+                        className="grid h-8 w-8 shrink-0 place-items-center rounded-lg"
+                        style={{ background: "var(--accent-soft)" }}
+                      >
+                        <Icon
+                          className="h-3.5 w-3.5"
+                          style={{ color: "var(--accent)" }}
+                        />
+                      </div>
+                      {i < experience.length - 1 && (
+                        <span
+                          className="mt-2 w-px flex-1"
+                          style={{ background: "var(--border)" }}
+                        />
+                      )}
+                    </div>
+                    <div className="pb-1">
+                      <p
+                        className="text-sm font-semibold"
+                        style={{ color: "var(--text)" }}
+                      >
+                        {item.role}
+                      </p>
+                      <p
+                        className="font-mono text-[11px] mt-0.5"
+                        style={{ color: "var(--accent-2)" }}
+                      >
+                        {item.org} · {item.period}
+                      </p>
+                      <p
+                        className="mt-1.5 text-sm leading-6"
+                        style={{ color: "var(--text-dim)" }}
+                      >
+                        {item.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+
+          <GithubStats />
+
+          {/* Toolkit */}
+          <motion.div {...fadeUp} className="panel p-7">
+            <p className="eyebrow">toolkit</p>
+            <h3
+              className="font-display mt-2 text-lg font-semibold"
+              style={{ color: "var(--text)" }}
+            >
+              Core skills
+            </h3>
+            <div className="mt-5 space-y-4">
+              {skills.map((skill) => (
+                <div key={skill.category}>
+                  <p
+                    className="font-mono text-[11px] uppercase tracking-[0.12em]"
+                    style={{ color: "var(--text-faint)" }}
+                  >
+                    {skill.category}
+                  </p>
+                  <div className="mt-2.5 flex flex-wrap gap-2">
+                    {skill.items.map((item) => (
+                      <span
+                        key={item}
+                        className="chip px-2.5 py-1 text-[11px] font-mono"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Now */}
+          <motion.div {...fadeUp} className="panel p-7">
+            <div className="flex items-center gap-2">
+              <Sparkles
+                className="h-4 w-4"
+                style={{ color: "var(--accent)" }}
+              />
+              <p className="eyebrow">now</p>
+            </div>
+            <p
+              className="mt-3 text-sm leading-6"
+              style={{ color: "var(--text-dim)" }}
+            >
+              Currently building a client-side 3D print pricing calculator —
+              porting an STL parser and pricing engine to run entirely in the
+              browser.
+            </p>
+          </motion.div>
+
+          {/* Contact */}
+          <motion.div {...fadeUp} className="panel p-7">
+            <p className="eyebrow">contact</p>
+            <h3
+              className="font-display mt-2 text-lg font-semibold"
+              style={{ color: "var(--text)" }}
+            >
+              Let's talk
+            </h3>
+            <div className="mt-5 stack-md space-y-2.5">
+              {quickLinks.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="panel-sunken flex items-center gap-3 px-4 py-3.5 text-sm"
+                  style={{ color: "var(--text)" }}
+                >
+                  <item.icon
+                    className="h-4 w-4"
+                    style={{ color: "var(--accent)" }}
+                  />
+                  {item.label}
+                </a>
+              ))}
+            </div>
+          </motion.div>
+
+          <p
+            className="text-center font-mono text-[11px]"
+            style={{ color: "var(--text-faint)" }}
+          >
+            © 2026
+          </p>
+        </div>
+      </main>
+
       {selectedProject && (
         <Modal
           isOpen={!!selectedProject}
           onClose={() => setSelectedProject(null)}
           title={selectedProject.title}
         >
-          <div className="space-y-4">
+          <div className="space-y-5">
             <div>
-              <p className="text-xs text-green-400 mb-2 font-mono">TYPE</p>
-              <p className="text-sm text-green-300">{selectedProject.subtitle}</p>
+              <p className="eyebrow mb-1.5">Type</p>
+              <p className="text-sm" style={{ color: "var(--text)" }}>
+                {selectedProject.subtitle}
+              </p>
             </div>
-
             <div>
-              <p className="text-xs text-green-400 mb-2 font-mono">DESCRIPTION</p>
-              <p className="text-sm text-green-300 leading-relaxed">
+              <p className="eyebrow mb-1.5">Description</p>
+              <p
+                className="text-sm leading-relaxed"
+                style={{ color: "var(--text-dim)" }}
+              >
                 {selectedProject.description}
               </p>
             </div>
-
             <div>
-              <p className="text-xs text-green-400 mb-2 font-mono">TECH</p>
+              <p className="eyebrow mb-1.5">Stack</p>
               <div className="flex flex-wrap gap-2">
                 {selectedProject.tech.map((tech) => (
                   <span
                     key={tech}
-                    className="px-2 py-1 bg-green-500/20 text-green-300 text-xs border border-green-500/50"
+                    className="chip px-2.5 py-1 text-[11px] font-mono"
                   >
                     {tech}
                   </span>
                 ))}
               </div>
+            </div>
+            <div>
+              <p className="eyebrow mb-1.5">Year</p>
+              <p className="text-sm" style={{ color: "var(--text)" }}>
+                {selectedProject.year}
+              </p>
             </div>
           </div>
         </Modal>

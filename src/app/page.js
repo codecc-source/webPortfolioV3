@@ -26,7 +26,7 @@ export default function Home() {
   };
 
   return (
-    <main>
+    <main className="overflow-hidden min-h-screen bg-slate-950 text-slate-100">
       <AnimatePresence mode="wait">
         {isBooting ? (
           <BootScreen key="boot" onBootComplete={handleBootComplete} />
