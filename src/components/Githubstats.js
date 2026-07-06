@@ -116,7 +116,7 @@ export default function GithubStats() {
           className="mt-5 font-mono text-[11px]"
           style={{ color: "var(--text-faint)" }}
         >
-          couldn't reach github api — set GITHUB_USERNAME in GithubStats.js
+          couldn&apos;t reach github api — set GITHUB_USERNAME in GithubStats.js
         </p>
       )}
     </motion.div>

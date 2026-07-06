@@ -214,8 +214,9 @@ export default function MobileView() {
               style={{ color: "var(--text-dim)" }}
             >
               I like systems that feel solid — fast load times, layouts that
-              don't shift, and interfaces that explain themselves. Most of my
-              work sits between custom product builds and client CMS platforms.
+              don&apos;t shift, and interfaces that explain themselves. Most of
+              my work sits between custom product builds and client CMS
+              platforms.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
               {["Detail-oriented", "Performance-minded", "Ships fast"].map(
@@ -427,7 +428,7 @@ export default function MobileView() {
               className="font-display mt-2 text-lg font-semibold"
               style={{ color: "var(--text)" }}
             >
-              Let's talk
+              Let&apos;s talk
             </h3>
             <div className="mt-5 stack-md space-y-2.5">
               {quickLinks.map((item) => (

@@ -265,10 +265,10 @@ export default function DesktopView() {
                 className="mt-4 text-sm sm:text-[15px] leading-7 max-w-2xl"
                 style={{ color: "var(--text-dim)" }}
               >
-                I'm a developer who likes systems that feel solid — fast load
-                times, layouts that don't shift, and interfaces that explain
-                themselves. Most of my work lives at the intersection of custom
-                product builds and client platforms: WordPress themes and
+                I&apos;m a developer who likes systems that feel solid — fast
+                load times, layouts that don&apos;t shift, and interfaces that
+                explain themselves. Most of my work lives at the intersection of
+                custom product builds and client platforms: WordPress themes and
                 plugins, CMS widgets, and the small automation scripts that keep
                 teams from doing the same task twice.
               </p>
@@ -455,7 +455,7 @@ export default function DesktopView() {
                 className="font-display mt-2 text-lg font-semibold"
                 style={{ color: "var(--text)" }}
               >
-                Let's talk
+                Let&apos;s talk
               </h3>
               <div className="mt-5 space-y-2.5">
                 {quickLinks.map((item) => {
