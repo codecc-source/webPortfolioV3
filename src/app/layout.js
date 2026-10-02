@@ -1,4 +1,5 @@
 import "./globals.css";
+import "./retro.css";
 
 export const metadata = {
   title: "Retro OS Portfolio",
