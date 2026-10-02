@@ -1,15 +1,20 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence, useDragControls } from "framer-motion";
 import { Power, Terminal } from "lucide-react";
 import Modal from "./Modal";
 import AppContent, { ProjectDetail } from "./AppContent";
+import Clock from "./Clock";
+import Tray from "./Tray";
+import GlitchIcon from "./GlitchIcon";
 import { apps } from "./data";
 
 function Win({ app, index, z, active, boundsRef, onFocus, onClose, onMin, onOpenProject }) {
   const controls = useDragControls();
   const Icon = app.icon;
+  const left = 140 + (index % 4) * 30;
+  const top = 14 + (index % 4) * 22;
   return (
     <motion.div
       drag dragControls={controls} dragListener={false} dragMomentum={false} dragElastic={0}
@@ -18,7 +23,7 @@ function Win({ app, index, z, active, boundsRef, onFocus, onClose, onMin, onOpen
       exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.15 }}
       onPointerDown={onFocus}
       className={`win ${active ? "" : "win-inactive"}`}
-      style={{ position: "absolute", left: 150 + index * 34, top: 24 + index * 28, width: app.w, maxWidth: "calc(100vw - 170px)", zIndex: z }}
+      style={{ position: "absolute", left, top, width: app.w, maxWidth: `calc(100vw - ${left + 16}px)`, maxHeight: `calc(100vh - ${top + 54}px)`, zIndex: z }}
     >
       <div className="win-title" onPointerDown={(e) => controls.start(e)}>
         <Icon size={13} />
@@ -26,7 +31,7 @@ function Win({ app, index, z, active, boundsRef, onFocus, onClose, onMin, onOpen
         <button className="win-btn" aria-label="Minimize" onPointerDown={(e) => e.stopPropagation()} onClick={onMin}>_</button>
         <button className="win-btn" aria-label="Close" onPointerDown={(e) => e.stopPropagation()} onClick={onClose}>×</button>
       </div>
-      <div className="win-body" style={{ maxHeight: "calc(100vh - 150px)" }}>
+      <div className="win-body">
         <AppContent id={app.id} onOpenProject={onOpenProject} />
       </div>
     </motion.div>
@@ -39,14 +44,13 @@ export default function DesktopView() {
   const [selected, setSelected] = useState(null);
   const [startOpen, setStartOpen] = useState(false);
   const [project, setProject] = useState(null);
-  const [now, setNow] = useState(null);
   const boundsRef = useRef(null);
-
-  useEffect(() => {
-    setNow(new Date());
-    const id = setInterval(() => setNow(new Date()), 30000);
-    return () => clearInterval(id);
-  }, []);
+  const [off, setOff] = useState(false);
+  const reboot = () => {
+    setStartOpen(false);
+    setOff(true);
+    setTimeout(() => location.reload(), 650);
+  };
 
   const launch = (id) => {
     setMin((m) => m.filter((x) => x !== id));
@@ -58,11 +62,12 @@ export default function DesktopView() {
   const top = open.filter((id) => !min.includes(id)).slice(-1)[0];
 
   return (
-    <div className="os-desktop" onPointerDown={() => setStartOpen(false)}>
+    <div className={`os-desktop ${off ? "crt-off" : "crt-on"}`} onPointerDown={() => setStartOpen(false)}>
       {/* desktop icons */}
       <div className="absolute left-3 top-3 z-[5] flex flex-col flex-wrap gap-2" style={{ maxHeight: "calc(100vh - 70px)" }}>
         {apps.map((a) => {
           const Icon = a.icon;
+          if (a.glitch) return <GlitchIcon key={a.id} selected={selected === a.id} onSelect={() => setSelected(a.id)} onOpen={() => launch(a.id)} />;
           return (
             <button key={a.id} className="os-icon" data-selected={selected === a.id}
               onClick={() => setSelected(a.id)} onDoubleClick={() => launch(a.id)}
@@ -96,12 +101,12 @@ export default function DesktopView() {
         {startOpen && (
           <motion.div className="start-menu" onPointerDown={(e) => e.stopPropagation()}
             initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={{ duration: 0.12 }}>
-            <div className="px-3 py-2 font-pixel text-xs" style={{ background: "var(--accent)", color: "#14130f" }}>RETRO_OS v1.0</div>
-            {apps.map((a) => {
+            <div className="px-3 py-2 font-pixel text-xs" style={{ background: "var(--accent)", color: "#06101f" }}>CTJR_OSv3</div>
+            {apps.filter((a) => !a.glitch).map((a) => {
               const Icon = a.icon;
               return <button key={a.id} className="start-item" onClick={() => launch(a.id)}><Icon size={16} />{a.label}</button>;
             })}
-            <button className="start-item" style={{ borderTop: "2px solid var(--border-strong)" }} onClick={() => location.reload()}>
+            <button className="start-item" style={{ borderTop: "2px solid var(--border-strong)" }} onClick={reboot}>
               <Power size={16} />Reboot
             </button>
           </motion.div>
@@ -124,9 +129,8 @@ export default function DesktopView() {
             );
           })}
         </div>
-        <span suppressHydrationWarning className="font-pixel text-xs px-3" style={{ color: "var(--accent)" }}>
-          {now ? now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "--:--"}
-        </span>
+        <Tray />
+        <Clock className="font-pixel text-xs px-3" style={{ color: "var(--accent)" }} />
       </div>
 
       <div className="crt" />

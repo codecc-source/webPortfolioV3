@@ -4,13 +4,13 @@ import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 
 const lines = [
-  "RETRO BIOS v1.0  (C) 2026",
+  "CTJR BIOS v3.0  (C) 2026",
   "CPU: PIXEL-86 @ 33MHz ........ OK",
   "MEMORY TEST:",
   "VIDEO: CRT-AMBER 640x480 ...... OK",
   "KEYBOARD ...................... OK",
   "MOUNTING /portfolio ........... OK",
-  "LOADING RETRO_OS ..............",
+  "LOADING CTJR_OSv3 ..............",
 ];
 
 export default function BootScreen({ onBootComplete }) {
@@ -57,7 +57,7 @@ export default function BootScreen({ onBootComplete }) {
       onClick={go}
     >
       <div className="bios-inner">
-        <p className="bios-logo">▓▒░ RETRO_OS ░▒▓</p>
+        <p className="bios-logo">▓▒░ CTJR_OSv3 ░▒▓</p>
         {lines.slice(0, shown).map((l, i) => (
           <p key={l}>
             {l}
@@ -65,7 +65,7 @@ export default function BootScreen({ onBootComplete }) {
             {i === 2 && mem >= 16384 && <span> OK</span>}
           </p>
         ))}
-        <p className="mt-4">
+        <p className="mt-4 text-center">
           {ready ? (
             <>PRESS ANY KEY TO BOOT<span className="blink">_</span></>
           ) : (

@@ -1,16 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Power } from "lucide-react";
 import Modal from "./Modal";
 import AppContent, { ProjectDetail } from "./AppContent";
+import Clock from "./Clock";
+import Tray from "./Tray";
+import GlitchIcon from "./GlitchIcon";
 import { apps, profile } from "./data";
 
 const dock = ["about", "projects", "contact"];
 
 function Tile({ app, onOpen }) {
   const Icon = app.icon;
+  if (app.glitch) return <GlitchIcon mobile onOpen={() => onOpen(app.id)} />;
   return (
     <button className="os-icon w-full" onClick={() => onOpen(app.id)}>
       <span className="os-icon-tile" style={{ width: 60, height: 60 }}><Icon size={28} /></span>
@@ -22,29 +26,27 @@ function Tile({ app, onOpen }) {
 export default function MobileView() {
   const [current, setCurrent] = useState(null);
   const [project, setProject] = useState(null);
-  const [now, setNow] = useState(null);
-
-  useEffect(() => {
-    setNow(new Date());
-    const id = setInterval(() => setNow(new Date()), 30000);
-    return () => clearInterval(id);
-  }, []);
+  const [off, setOff] = useState(false);
+  const reboot = () => {
+    setOff(true);
+    setTimeout(() => location.reload(), 650);
+  };
 
   const app = apps.find((a) => a.id === current);
 
   return (
-    <div className="os-desktop">
+    <div className={`os-desktop ${off ? "crt-off" : "crt-on"}`}>
       <div className="m-status">
-        <span style={{ color: "var(--accent)" }}>RETRO_OS</span>
-        <span suppressHydrationWarning>
-          {now ? now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "--:--"}
-        </span>
-        <span style={{ color: "var(--accent-2)" }}>▮▮▮▯</span>
+        <button className="flex items-center gap-1.5" style={{ color: "var(--accent)" }} onClick={reboot} aria-label="Reboot">
+          <Power size={12} />CTJR_OSv3
+        </button>
+        <Clock />
+        <Tray />
       </div>
 
       <main className="absolute inset-x-0 top-[30px] bottom-0 overflow-y-auto px-5 pt-5 pb-28">
         <div className="win mx-auto max-w-md mb-6">
-          <div className="win-title" style={{ cursor: "default" }}><span className="flex-1">welcome.txt</span></div>
+          <div className="win-title"><span className="flex-1">welcome.txt</span></div>
           <div className="px-4 py-4">
             <h1 className="font-display text-xl font-semibold leading-tight">{profile.name}</h1>
             <p className="mt-2 font-mono text-[11px]" style={{ color: "var(--accent-2)" }}>{profile.role}</p>

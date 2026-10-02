@@ -39,7 +39,7 @@ export default function GithubStats() {
       {!error ? (
         <div className="mt-4 overflow-hidden border" style={{ borderColor: "var(--border)" }}>
           <img
-            src={`https://github-readme-streak-stats.herokuapp.com/?user=${GITHUB_USERNAME}&theme=dark&hide_border=true&background=1A1916&stroke=2A2925&ring=F2A93B&fire=F2A93B&currStreakLabel=F2EEE3&sideLabels=A39C8D&dates=6E6A60&currStreakNum=F2EEE3&sideNums=F2EEE3`}
+            src={`https://github-readme-streak-stats.herokuapp.com/?user=${GITHUB_USERNAME}&theme=dark&hide_border=true&background=111B3A&stroke=1F2C57&ring=4FC3F7&fire=4FC3F7&currStreakLabel=E6ECFF&sideLabels=97A6D1&dates=5F6E99&currStreakNum=E6ECFF&sideNums=E6ECFF`}
             alt="GitHub streak stats" className="w-full" loading="lazy"
           />
         </div>
