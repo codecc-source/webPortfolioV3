@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useDragControls } from "framer-motion";
 import { Power, Terminal } from "lucide-react";
 import Modal from "./Modal";
@@ -8,6 +8,7 @@ import AppContent, { ProjectDetail } from "./AppContent";
 import Clock from "./Clock";
 import Tray from "./Tray";
 import GlitchIcon from "./GlitchIcon";
+import PacmanGame from "./PacmanGame";
 import { apps } from "./data";
 
 function Win({ app, index, z, active, boundsRef, onFocus, onClose, onMin, onOpenProject }) {
@@ -46,6 +47,13 @@ export default function DesktopView() {
   const [project, setProject] = useState(null);
   const boundsRef = useRef(null);
   const [off, setOff] = useState(false);
+  const [game, setGame] = useState(false);
+
+  useEffect(() => {
+    const run = () => setGame(true);
+    window.addEventListener("run-pacman", run);
+    return () => window.removeEventListener("run-pacman", run);
+  }, []);
   const reboot = () => {
     setStartOpen(false);
     setOff(true);
@@ -133,6 +141,7 @@ export default function DesktopView() {
         <Clock className="font-pixel text-xs px-3" style={{ color: "var(--accent)" }} />
       </div>
 
+      {game && <PacmanGame onExit={() => setGame(false)} />}
       <div className="crt" />
       {project && (
         <Modal isOpen onClose={() => setProject(null)} title={project.title}>

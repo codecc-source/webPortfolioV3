@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, Power } from "lucide-react";
 import Modal from "./Modal";
@@ -8,6 +8,7 @@ import AppContent, { ProjectDetail } from "./AppContent";
 import Clock from "./Clock";
 import Tray from "./Tray";
 import GlitchIcon from "./GlitchIcon";
+import PacmanGame from "./PacmanGame";
 import { apps, profile } from "./data";
 
 const dock = ["about", "projects", "contact"];
@@ -27,6 +28,13 @@ export default function MobileView() {
   const [current, setCurrent] = useState(null);
   const [project, setProject] = useState(null);
   const [off, setOff] = useState(false);
+  const [game, setGame] = useState(false);
+
+  useEffect(() => {
+    const run = () => setGame(true);
+    window.addEventListener("run-pacman", run);
+    return () => window.removeEventListener("run-pacman", run);
+  }, []);
   const reboot = () => {
     setOff(true);
     setTimeout(() => location.reload(), 650);
@@ -77,6 +85,7 @@ export default function MobileView() {
         )}
       </AnimatePresence>
 
+      {game && <PacmanGame mobile onExit={() => setGame(false)} />}
       <div className="crt" />
       {project && (
         <Modal isOpen onClose={() => setProject(null)} title={project.title}>

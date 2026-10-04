@@ -46,7 +46,7 @@ export default function KonamiApp() {
   }, [press]);
 
   const msg =
-    status === "ok" ? "ACCESS GRANTED — pacman.exe not found (yet)"
+    status === "ok" ? "ACCESS GRANTED — pacman.exe found"
     : status === "error" ? "ERROR: invalid sequence"
     : "waiting for input_";
   const color =
@@ -79,6 +79,12 @@ export default function KonamiApp() {
         })}
       </div>
       <p className="text-xs" style={{ color }}>{msg}</p>
+      {status === "ok" && (
+        <button className="btn-accent px-4 py-1.5 text-xs font-pixel" style={{ border: "2px solid var(--text)" }}
+          onClick={() => window.dispatchEvent(new Event("run-pacman"))}>
+          [ RUN pacman.exe ]
+        </button>
+      )}
     </div>
   );
 }
