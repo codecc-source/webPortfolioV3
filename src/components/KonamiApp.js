@@ -55,7 +55,7 @@ export default function KonamiApp() {
   return (
     <div className="space-y-5 font-mono">
       <p className="font-pixel text-sm" style={{ color: "var(--danger)" }}>KONAMI CODE</p>
-      <p className="text-xs" style={{ color: "var(--text-dim)" }}>&gt; enter konami code to open file</p>
+      <p className="text-xs" style={{ color: "var(--text-dim)" }}>&gt; enter konami code to open file (shorter version of konami code)</p>
       <div className="flex gap-2">
         {CODE.map((_, i) => {
           const k = seq[i];
