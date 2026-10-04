@@ -26,10 +26,11 @@ body {
   color: var(--text);
   background: var(--bg);
   font-family: 'Inter', sans-serif;
-  min-height: 100vh;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
+
+html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
 
 * {
   box-sizing: border-box;

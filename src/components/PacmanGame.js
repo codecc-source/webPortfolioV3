@@ -8,13 +8,21 @@ const DIR_LIST = Object.values(DIRS);
 const GHOST_COLORS = ["#ff6b6b", "#ff9ecd", "#ffb454", "#b794f6"];
 const CHASE = [0.9, 0.65, 0.5, 0.75];
 const LS_KEY = "ctjr-pacman-best";
+const POWER_RATIO = 50;
+const POWER_GAP = 5;
 const odd = (n) => (n % 2 === 0 ? n - 1 : n);
 
 const loadBest = () => {
-  try { return Number(localStorage.getItem(LS_KEY)) || 0; } catch { return 0; }
+  try {
+    return Number(localStorage.getItem(LS_KEY)) || 0;
+  } catch {
+    return 0;
+  }
 };
 const saveBest = (v) => {
-  try { localStorage.setItem(LS_KEY, String(v)); } catch {}
+  try {
+    localStorage.setItem(LS_KEY, String(v));
+  } catch {}
 };
 
 function buildMaze(cols, rows) {
@@ -29,9 +37,12 @@ function buildMaze(cols, rows) {
   while (stack.length) {
     const [cx, cy] = stack[stack.length - 1];
     const opts = DIR_LIST.map(([dx, dy]) => [cx + dx, cy + dy, dx, dy]).filter(
-      ([x, y]) => x >= 0 && y >= 0 && x < nx && y < ny && !seen[y * nx + x]
+      ([x, y]) => x >= 0 && y >= 0 && x < nx && y < ny && !seen[y * nx + x],
     );
-    if (!opts.length) { stack.pop(); continue; }
+    if (!opts.length) {
+      stack.pop();
+      continue;
+    }
     const [x, y, dx, dy] = opts[Math.floor(Math.random() * opts.length)];
     seen[y * nx + x] = 1;
     g[idx(2 * x + 1, 2 * y + 1)] = 0;
@@ -46,10 +57,16 @@ function buildMaze(cols, rows) {
     }
   }
   for (let y = 1; y < rows - 1; y += 2) {
-    if (((y - 1) / 2) % 3 === 1) { g[idx(0, y)] = 0; g[idx(cols - 1, y)] = 0; }
+    if (((y - 1) / 2) % 3 === 1) {
+      g[idx(0, y)] = 0;
+      g[idx(cols - 1, y)] = 0;
+    }
   }
   for (let x = 1; x < cols - 1; x += 2) {
-    if (((x - 1) / 2) % 3 === 1) { g[idx(x, 0)] = 0; g[idx(x, rows - 1)] = 0; }
+    if (((x - 1) / 2) % 3 === 1) {
+      g[idx(x, 0)] = 0;
+      g[idx(x, rows - 1)] = 0;
+    }
   }
   return g;
 }
@@ -65,14 +82,18 @@ export default function PacmanGame({ onExit, mobile = false }) {
   const [overlay, setOverlay] = useState(null);
   const [hud, setHud] = useState({ score: 0, lives: 3, left: 0, best: 0 });
 
-  useEffect(() => { exitRef.current = onExit; }, [onExit]);
+  useEffect(() => {
+    exitRef.current = onExit;
+  }, [onExit]);
 
   useEffect(() => {
     const el = areaRef.current;
     const measure = () => {
       const w = Math.floor(el.clientWidth);
       const h = Math.floor(el.clientHeight);
-      setSize((s) => (s && Math.abs(s.w - w) < 3 && Math.abs(s.h - h) < 3 ? s : { w, h }));
+      setSize((s) =>
+        s && Math.abs(s.w - w) < 60 && w > h === s.w > s.h ? s : { w, h },
+      );
     };
     measure();
     const ro = new ResizeObserver(measure);
@@ -82,13 +103,22 @@ export default function PacmanGame({ onExit, mobile = false }) {
 
   useEffect(() => {
     const map = {
-      ArrowUp: DIRS.up, w: DIRS.up, ArrowDown: DIRS.down, s: DIRS.down,
-      ArrowLeft: DIRS.left, a: DIRS.left, ArrowRight: DIRS.right, d: DIRS.right,
+      ArrowUp: DIRS.up,
+      w: DIRS.up,
+      ArrowDown: DIRS.down,
+      s: DIRS.down,
+      ArrowLeft: DIRS.left,
+      a: DIRS.left,
+      ArrowRight: DIRS.right,
+      d: DIRS.right,
     };
     const onKey = (e) => {
       if (e.key === "Escape") return exitRef.current();
       const d = map[e.key] ?? map[e.key.toLowerCase()];
-      if (d) { e.preventDefault(); input.current.want = d; }
+      if (d) {
+        e.preventDefault();
+        input.current.want = d;
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -115,7 +145,8 @@ export default function PacmanGame({ onExit, mobile = false }) {
     const wrapX = (x) => (x + cols) % cols;
     const wrapY = (y) => (y + rows) % rows;
     const open = (x, y) => grid[wrapY(y) * cols + wrapX(x)] === 0;
-    const wallAt = (x, y) => x >= 0 && y >= 0 && x < cols && y < rows && grid[y * cols + x] === 1;
+    const wallAt = (x, y) =>
+      x >= 0 && y >= 0 && x < cols && y < rows && grid[y * cols + x] === 1;
 
     const walls = document.createElement("canvas");
     walls.width = W * dpr;
@@ -136,11 +167,24 @@ export default function PacmanGame({ onExit, mobile = false }) {
         wc.fillRect(px, py, tile, tile);
         wc.shadowBlur = 6;
         wc.beginPath();
-        const free = (a, b) => a >= 0 && b >= 0 && a < cols && b < rows && !wallAt(a, b);
-        if (free(x, y - 1)) { wc.moveTo(px, py + 1); wc.lineTo(px + tile, py + 1); }
-        if (free(x, y + 1)) { wc.moveTo(px, py + tile - 1); wc.lineTo(px + tile, py + tile - 1); }
-        if (free(x - 1, y)) { wc.moveTo(px + 1, py); wc.lineTo(px + 1, py + tile); }
-        if (free(x + 1, y)) { wc.moveTo(px + tile - 1, py); wc.lineTo(px + tile - 1, py + tile); }
+        const free = (a, b) =>
+          a >= 0 && b >= 0 && a < cols && b < rows && !wallAt(a, b);
+        if (free(x, y - 1)) {
+          wc.moveTo(px, py + 1);
+          wc.lineTo(px + tile, py + 1);
+        }
+        if (free(x, y + 1)) {
+          wc.moveTo(px, py + tile - 1);
+          wc.lineTo(px + tile, py + tile - 1);
+        }
+        if (free(x - 1, y)) {
+          wc.moveTo(px + 1, py);
+          wc.lineTo(px + 1, py + tile);
+        }
+        if (free(x + 1, y)) {
+          wc.moveTo(px + tile - 1, py);
+          wc.lineTo(px + tile - 1, py + tile);
+        }
         wc.stroke();
       }
     }
@@ -155,20 +199,63 @@ export default function PacmanGame({ onExit, mobile = false }) {
 
     const pellets = new Uint8Array(cols * rows);
     for (let y = 1; y < rows - 1; y++) {
-      for (let x = 1; x < cols - 1; x++) if (grid[y * cols + x] === 0) pellets[y * cols + x] = 1;
+      for (let x = 1; x < cols - 1; x++)
+        if (grid[y * cols + x] === 0) pellets[y * cols + x] = 1;
     }
-    [[1, 1], [cols - 2, 1], [1, rows - 2], [cols - 2, rows - 2]].forEach(([x, y]) => { pellets[y * cols + x] = 2; });
+    const startIdx = pacStart[1] * cols + pacStart[0];
+    const floorTiles = [];
+    pellets.forEach((v, i) => {
+      if (v === 1 && i !== startIdx) floorTiles.push(i);
+    });
+    const powers = [
+      [1, 1],
+      [cols - 2, 1],
+      [1, rows - 2],
+      [cols - 2, rows - 2],
+    ].map(([x, y]) => y * cols + x);
+    const wanted = powers.length + Math.round(floorTiles.length / POWER_RATIO);
+    for (let tries = 0; powers.length < wanted && tries < 500; tries++) {
+      const i = floorTiles[Math.floor(Math.random() * floorTiles.length)];
+      const x = i % cols;
+      const y = Math.floor(i / cols);
+      const close = powers.some(
+        (p) =>
+          Math.abs((p % cols) - x) + Math.abs(Math.floor(p / cols) - y) <
+          POWER_GAP,
+      );
+      if (!close) powers.push(i);
+    }
+    powers.forEach((i) => {
+      pellets[i] = 2;
+    });
     pellets[pacStart[1] * cols + pacStart[0]] = 0;
     const pelletIdx = [];
-    pellets.forEach((v, i) => { if (v) pelletIdx.push(i); });
+    pellets.forEach((v, i) => {
+      if (v) pelletIdx.push(i);
+    });
     let left = pelletIdx.length;
     const total = left;
 
-    const place = (e, x, y) => { e.tx = x; e.ty = y; e.dx = 0; e.dy = 0; e.t = 0; };
+    const place = (e, x, y) => {
+      e.tx = x;
+      e.ty = y;
+      e.dx = 0;
+      e.dy = 0;
+      e.t = 0;
+    };
     const pac = { tx: 0, ty: 0, dx: 0, dy: 0, t: 0, face: 0 };
     const ghosts = homes.map((h, i) => ({
-      tx: 0, ty: 0, dx: 0, dy: 0, t: 0, home: h, wait: 0, respawn: 0,
-      color: GHOST_COLORS[i], chase: CHASE[i], delay: [0.5, 2, 3.5, 5][i],
+      tx: 0,
+      ty: 0,
+      dx: 0,
+      dy: 0,
+      t: 0,
+      home: h,
+      wait: 0,
+      respawn: 0,
+      color: GHOST_COLORS[i],
+      chase: CHASE[i],
+      delay: [0.5, 2, 3.5, 5][i],
     }));
 
     let score = 0;
@@ -181,7 +268,11 @@ export default function PacmanGame({ onExit, mobile = false }) {
 
     const resetPositions = () => {
       place(pac, pacStart[0], pacStart[1]);
-      ghosts.forEach((g) => { place(g, g.home[0], g.home[1]); g.wait = g.delay; g.respawn = 0; });
+      ghosts.forEach((g) => {
+        place(g, g.home[0], g.home[1]);
+        g.wait = g.delay;
+        g.respawn = 0;
+      });
       input.current.want = null;
       fright = 0;
       mode = "ready";
@@ -189,8 +280,14 @@ export default function PacmanGame({ onExit, mobile = false }) {
     };
     resetPositions();
 
-    const td = (a, b, n) => { const d = Math.abs(a - b); return Math.min(d, n - d); };
-    const tdl = (a, n) => { const d = ((a % n) + n) % n; return d > n / 2 ? d - n : d; };
+    const td = (a, b, n) => {
+      const d = Math.abs(a - b);
+      return Math.min(d, n - d);
+    };
+    const tdl = (a, n) => {
+      const d = ((a % n) + n) % n;
+      return d > n / 2 ? d - n : d;
+    };
     const pos = (e) => ({ x: e.tx + e.dx * e.t, y: e.ty + e.dy * e.t });
 
     const advance = (e, speed, dt, choose) => {
@@ -201,7 +298,10 @@ export default function PacmanGame({ onExit, mobile = false }) {
           if (e.dx === 0 && e.dy === 0) return;
         }
         const need = 1 - e.t;
-        if (rem < need) { e.t += rem; return; }
+        if (rem < need) {
+          e.t += rem;
+          return;
+        }
         rem -= need;
         e.tx = wrapX(e.tx + e.dx);
         e.ty = wrapY(e.ty + e.dy);
@@ -212,20 +312,37 @@ export default function PacmanGame({ onExit, mobile = false }) {
 
     const choosePac = (e) => {
       const w = input.current.want;
-      if (w && open(e.tx + w[0], e.ty + w[1])) { e.dx = w[0]; e.dy = w[1]; }
-      else if (!open(e.tx + e.dx, e.ty + e.dy)) { e.dx = 0; e.dy = 0; }
+      if (w && open(e.tx + w[0], e.ty + w[1])) {
+        e.dx = w[0];
+        e.dy = w[1];
+      } else if (!open(e.tx + e.dx, e.ty + e.dy)) {
+        e.dx = 0;
+        e.dy = 0;
+      }
       if (e.dx || e.dy) e.face = Math.atan2(e.dy, e.dx);
     };
 
     const chooseGhost = (g) => {
-      let opts = DIR_LIST.filter(([dx, dy]) => open(g.tx + dx, g.ty + dy) && !(dx === -g.dx && dy === -g.dy));
-      if (!opts.length) opts = DIR_LIST.filter(([dx, dy]) => open(g.tx + dx, g.ty + dy));
-      if (!opts.length) { g.dx = 0; g.dy = 0; return; }
-      const dist = ([dx, dy]) => td(g.tx + dx, pac.tx, cols) ** 2 + td(g.ty + dy, pac.ty, rows) ** 2;
+      let opts = DIR_LIST.filter(
+        ([dx, dy]) =>
+          open(g.tx + dx, g.ty + dy) && !(dx === -g.dx && dy === -g.dy),
+      );
+      if (!opts.length)
+        opts = DIR_LIST.filter(([dx, dy]) => open(g.tx + dx, g.ty + dy));
+      if (!opts.length) {
+        g.dx = 0;
+        g.dy = 0;
+        return;
+      }
+      const dist = ([dx, dy]) =>
+        td(g.tx + dx, pac.tx, cols) ** 2 + td(g.ty + dy, pac.ty, rows) ** 2;
       const progress = 1 - left / total;
       let pick;
       if (fright > 0) {
-        pick = Math.random() < 0.7 ? opts.reduce((a, b) => (dist(b) > dist(a) ? b : a)) : opts[Math.floor(Math.random() * opts.length)];
+        pick =
+          Math.random() < 0.7
+            ? opts.reduce((a, b) => (dist(b) > dist(a) ? b : a))
+            : opts[Math.floor(Math.random() * opts.length)];
       } else if (Math.random() < Math.min(0.97, g.chase + 0.25 * progress)) {
         pick = opts.reduce((a, b) => (dist(b) < dist(a) ? b : a));
       } else {
@@ -237,15 +354,25 @@ export default function PacmanGame({ onExit, mobile = false }) {
 
     const finish = (kind) => {
       mode = kind;
-      if (score > best) { best = score; saveBest(best); }
+      if (score > best) {
+        best = score;
+        saveBest(best);
+      }
       setOverlay(kind);
     };
 
     const update = (dt) => {
-      if (mode === "ready") { modeT -= dt; if (modeT <= 0) mode = "play"; return; }
+      if (mode === "ready") {
+        modeT -= dt;
+        if (modeT <= 0) mode = "play";
+        return;
+      }
       if (mode === "dead") {
         modeT -= dt;
-        if (modeT <= 0) { if (lives <= 0) finish("over"); else resetPositions(); }
+        if (modeT <= 0) {
+          if (lives <= 0) finish("over");
+          else resetPositions();
+        }
         return;
       }
       if (mode !== "play") return;
@@ -264,10 +391,16 @@ export default function PacmanGame({ onExit, mobile = false }) {
       const p = pos(pac);
       const pi = wrapY(Math.round(p.y)) * cols + wrapX(Math.round(p.x));
       if (pellets[pi]) {
-        if (pellets[pi] === 2) { score += 50; fright = 6; } else score += 10;
+        if (pellets[pi] === 2) {
+          score += 50;
+          fright = 6;
+        } else score += 10;
         pellets[pi] = 0;
         left--;
-        if (left === 0) { finish("win"); return; }
+        if (left === 0) {
+          finish("win");
+          return;
+        }
       }
 
       if (fright > 0) fright -= dt;
@@ -276,17 +409,30 @@ export default function PacmanGame({ onExit, mobile = false }) {
       for (const g of ghosts) {
         if (g.respawn > 0) {
           g.respawn -= dt;
-          if (g.respawn <= 0) { place(g, g.home[0], g.home[1]); g.wait = 0.5; }
+          if (g.respawn <= 0) {
+            place(g, g.home[0], g.home[1]);
+            g.wait = 0.5;
+          }
           continue;
         }
-        if (g.wait > 0) { g.wait -= dt; continue; }
+        if (g.wait > 0) {
+          g.wait -= dt;
+          continue;
+        }
         advance(g, fright > 0 ? base * 0.55 : base, dt, chooseGhost);
         const gp = pos(g);
         const ddx = tdl(gp.x - p.x, cols);
         const ddy = tdl(gp.y - p.y, rows);
         if (Math.hypot(ddx, ddy) < 0.6) {
-          if (fright > 0) { score += 200; g.respawn = 3; }
-          else { lives--; mode = "dead"; modeT = 1.2; return; }
+          if (fright > 0) {
+            score += 200;
+            g.respawn = 3;
+          } else {
+            lives--;
+            mode = "dead";
+            modeT = 1.2;
+            return;
+          }
         }
       }
     };
@@ -298,7 +444,8 @@ export default function PacmanGame({ onExit, mobile = false }) {
         for (const oy of [-H, 0, H]) {
           const px = x + ox;
           const py = y + oy;
-          if (px > -tile && px < W + tile && py > -tile && py < H + tile) fn(px, py);
+          if (px > -tile && px < W + tile && py > -tile && py < H + tile)
+            fn(px, py);
         }
       }
     };
@@ -330,7 +477,13 @@ export default function PacmanGame({ onExit, mobile = false }) {
         ctx.fillStyle = "#06101f";
         [-1, 1].forEach((s) => {
           ctx.beginPath();
-          ctx.arc(x + s * r * 0.38 + g.dx * r * 0.1, y - r * 0.25 + g.dy * r * 0.1, r * 0.11, 0, Math.PI * 2);
+          ctx.arc(
+            x + s * r * 0.38 + g.dx * r * 0.1,
+            y - r * 0.25 + g.dy * r * 0.1,
+            r * 0.11,
+            0,
+            Math.PI * 2,
+          );
           ctx.fill();
         });
       });
@@ -349,7 +502,11 @@ export default function PacmanGame({ onExit, mobile = false }) {
         const x = ((i % cols) + 0.5) * tile;
         const y = (Math.floor(i / cols) + 0.5) * tile;
         if (v === 1) ctx.fillRect(x - pr, y - pr, pr * 2, pr * 2);
-        else if (blink) { ctx.beginPath(); ctx.arc(x, y, tile * 0.2, 0, Math.PI * 2); ctx.fill(); }
+        else if (blink) {
+          ctx.beginPath();
+          ctx.arc(x, y, tile * 0.2, 0, Math.PI * 2);
+          ctx.fill();
+        }
       }
 
       const p = pos(pac);
@@ -359,7 +516,13 @@ export default function PacmanGame({ onExit, mobile = false }) {
         ctx.fillStyle = "#ffd23f";
         ctx.beginPath();
         ctx.moveTo(x, y);
-        ctx.arc(x, y, tile * 0.42, pac.face + mouth, pac.face + Math.PI * 2 - mouth);
+        ctx.arc(
+          x,
+          y,
+          tile * 0.42,
+          pac.face + mouth,
+          pac.face + Math.PI * 2 - mouth,
+        );
         ctx.closePath();
         ctx.fill();
       });
@@ -370,7 +533,11 @@ export default function PacmanGame({ onExit, mobile = false }) {
         ctx.fillStyle = "#4fc3f7";
         ctx.font = `${Math.round(tile * 0.5)}px Silkscreen, monospace`;
         ctx.textAlign = "center";
-        ctx.fillText("READY!", (pacStart[0] + 0.5) * tile, (pacStart[1] - 0.6) * tile);
+        ctx.fillText(
+          "READY!",
+          (pacStart[0] + 0.5) * tile,
+          (pacStart[1] - 0.6) * tile,
+        );
       }
     };
 
@@ -396,21 +563,42 @@ export default function PacmanGame({ onExit, mobile = false }) {
     return () => cancelAnimationFrame(raf);
   }, [size, run, mobile]);
 
-  const restart = () => { setOverlay(null); setRun((r) => r + 1); };
-  const press = (d) => { input.current.want = DIRS[d]; };
-  const onPointerDown = (e) => { swipe.current = { x: e.clientX, y: e.clientY }; };
+  const restart = () => {
+    setOverlay(null);
+    setRun((r) => r + 1);
+  };
+  const press = (d) => {
+    input.current.want = DIRS[d];
+  };
+  const onPointerDown = (e) => {
+    swipe.current = { x: e.clientX, y: e.clientY };
+  };
   const onPointerMove = (e) => {
     const s = swipe.current;
     if (!s) return;
     const dx = e.clientX - s.x;
     const dy = e.clientY - s.y;
     if (Math.hypot(dx, dy) < 18) return;
-    input.current.want = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? DIRS.right : DIRS.left) : (dy > 0 ? DIRS.down : DIRS.up);
+    input.current.want =
+      Math.abs(dx) > Math.abs(dy)
+        ? dx > 0
+          ? DIRS.right
+          : DIRS.left
+        : dy > 0
+          ? DIRS.down
+          : DIRS.up;
     swipe.current = { x: e.clientX, y: e.clientY };
   };
-  const onPointerUp = () => { swipe.current = null; };
+  const onPointerUp = () => {
+    swipe.current = null;
+  };
 
-  const padIcons = { up: ArrowUp, left: ArrowLeft, down: ArrowDown, right: ArrowRight };
+  const padIcons = {
+    up: ArrowUp,
+    left: ArrowLeft,
+    down: ArrowDown,
+    right: ArrowRight,
+  };
 
   return (
     <div className={`pac-root ${mobile ? "mobile" : ""}`}>
@@ -419,36 +607,64 @@ export default function PacmanGame({ onExit, mobile = false }) {
         <span>BEST {hud.best}</span>
         <span>LIVES {"♥".repeat(Math.max(0, hud.lives))}</span>
         <span>LEFT {hud.left}</span>
-        {!mobile && <span className="pac-hint">ARROWS / WASD · ESC TO QUIT</span>}
-        <button className="pac-quit" onClick={() => onExit()}>QUIT</button>
+        {!mobile && (
+          <span className="pac-hint">ARROWS / WASD · ESC TO QUIT</span>
+        )}
+        <button className="pac-quit" onClick={() => onExit()}>
+          QUIT
+        </button>
       </div>
-      <div className="pac-area" ref={areaRef}>
-        <canvas
-          ref={canvasRef}
-          className="pac-canvas"
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerCancel={onPointerUp}
-        />
+      <div
+        className="pac-area"
+        ref={areaRef}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+      >
+        <canvas ref={canvasRef} className="pac-canvas" />
         {overlay && (
           <div className="pac-over">
             <div className="win" style={{ width: 340, maxWidth: "90%" }}>
               <div className="win-title" style={{ cursor: "default" }}>
-                <span className="flex-1">{overlay === "win" ? "pacman.exe — cleared" : "pacman.exe — game over"}</span>
+                <span className="flex-1">
+                  {overlay === "win"
+                    ? "pacman.exe — cleared"
+                    : "pacman.exe — game over"}
+                </span>
               </div>
               <div className="win-body space-y-4 text-center">
-                <p className="font-pixel text-lg" style={{ color: overlay === "win" ? "var(--accent-2)" : "var(--danger)" }}>
+                <p
+                  className="font-pixel text-lg"
+                  style={{
+                    color:
+                      overlay === "win" ? "var(--accent-2)" : "var(--danger)",
+                  }}
+                >
                   {overlay === "win" ? "CONGRATULATIONS!" : "GAME OVER"}
                 </p>
                 <p className="text-sm" style={{ color: "var(--text-dim)" }}>
-                  {overlay === "win" ? "You cleared every pellet." : "The ghosts got you."} Score: {hud.score}
+                  {overlay === "win"
+                    ? "You cleared every pellet."
+                    : "The ghosts got you."}{" "}
+                  Score: {hud.score}
                 </p>
                 <div className="flex justify-center gap-3">
-                  <button className="btn-accent px-4 py-1.5 text-xs font-pixel" style={{ border: "2px solid var(--text)" }} onClick={restart}>
+                  <button
+                    className="btn-accent px-4 py-1.5 text-xs font-pixel"
+                    style={{ border: "2px solid var(--text)" }}
+                    onClick={restart}
+                  >
                     [ PLAY AGAIN ]
                   </button>
-                  <button className="px-4 py-1.5 text-xs font-pixel" style={{ border: "2px solid var(--text-faint)", color: "var(--text)" }} onClick={() => onExit()}>
+                  <button
+                    className="px-4 py-1.5 text-xs font-pixel"
+                    style={{
+                      border: "2px solid var(--text-faint)",
+                      color: "var(--text)",
+                    }}
+                    onClick={() => onExit()}
+                  >
                     [ QUIT ]
                   </button>
                 </div>
@@ -463,7 +679,13 @@ export default function PacmanGame({ onExit, mobile = false }) {
             {Object.keys(padIcons).map((d) => {
               const Icon = padIcons[d];
               return (
-                <button key={d} className="pad-btn" style={{ gridArea: d }} aria-label={d} onPointerDown={() => press(d)}>
+                <button
+                  key={d}
+                  className="pad-btn"
+                  style={{ gridArea: d }}
+                  aria-label={d}
+                  onPointerDown={() => press(d)}
+                >
                   <Icon size={22} />
                 </button>
               );
